@@ -17,7 +17,7 @@ describe("filterByCategory", () => {
       [1, 2, 3, 4, 5, 6],
     );
   });
-  test("'electronics' возвращает товары с ID [1, 2, 3, 4, 5, 6]", () => {
+  test("'electronics' возвращает товары с ID [1, 2]", () => {
     expect(
       filterByCategory(products, "electronics").map((product) => product.id),
     ).toEqual([1, 2]);
