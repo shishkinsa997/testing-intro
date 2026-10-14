@@ -1,6 +1,6 @@
 function addToCart(cart, product, qty) {
-  if (!qty) {
-    throw new RangeError("Не валидное количество");
+  if (!qty && qty <= 0) {
+    throw new RangeError("Количество должно быть целым положительным числом");
   }
   const cartProduct = cart?.find((p) => p.id === product.id);
 
@@ -9,19 +9,17 @@ function addToCart(cart, product, qty) {
       throw new RangeError("Не достаточное количество товара на складе");
     }
     cartProduct.quantity += qty;
-
-    return cart;
   } else {
     if (qty > product.stock) {
       throw new RangeError("Не достаточное количество товара на складе");
     }
-
-    return [...cart, { ...product, quantity: qty }];
+    cart.push({ ...product, quantity: qty });
   }
+  return cart;
 }
 function changeQuantity(cart, id, qty) {
-  if (!qty) {
-    throw new RangeError("Не валидное количество");
+  if (!qty && qty <= 0) {
+    throw new RangeError("Количество должно быть целым положительным числом");
   }
   const product = cart?.find((item) => item.id === id);
   if (product && qty > product.stock) {
@@ -44,9 +42,9 @@ function calculateCartSubtotal(cart) {
 }
 function calculateOrderTotal(cart, promo) {
   const subtotal = calculateCartSubtotal(cart);
-  const applyPromo = promo === "SAVE10" && subtotal > 20000;
-  const discount = applyPromo ? subtotal * 0.1 : 0;
-  const delivery = subtotal > 50000 ? 0 : 30000;
+  const applyPromo = promo === "SAVE10" && subtotal >= 20000;
+  const discount = applyPromo ? Math.round(subtotal * 0.1) : 0;
+  const delivery = subtotal >= 50000 ? 0 : 30000;
   return {
     subtotal,
     discount,
