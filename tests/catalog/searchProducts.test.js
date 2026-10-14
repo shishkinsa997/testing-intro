@@ -22,6 +22,11 @@ describe("searchProducts", () => {
       searchProducts(products, "javascript").map((product) => product.id),
     ).toEqual([3]);
   });
+  test("'ЧЕХОЛ' возвращает товар с ID 5", () => {
+    expect(
+      searchProducts(products, "ЧЕХОЛ").map((product) => product.id),
+    ).toEqual([5]);
+  });
   test("'наушники' возвращает товар с ID 1", () => {
     expect(
       searchProducts(products, "наушники").map((product) => product.id),
