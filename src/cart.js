@@ -6,17 +6,21 @@ function addToCart(cart, product, qty) {
   if (!qty) {
     throw new RangeError("Не валидное количество");
   }
-  if (qty > product.stock) {
-    throw new RangeError("Не достаточное количество товара на складе");
-  }
-
   const cartProduct = cart?.find((p) => p.id === product.id);
 
   if (cartProduct) {
+    if (cartProduct.quantity + qty > cartProduct.stock) {
+      throw new RangeError("Не достаточное количество товара на складе");
+    }
     cartProduct.quantity += qty;
+
     return cart;
   } else {
-    return [...cart, { ...product, quantity: +qty }];
+    if (qty > product.stock) {
+      throw new RangeError("Не достаточное количество товара на складе");
+    }
+
+    return [...cart, { ...product, quantity: qty }];
   }
 }
 function changeQuantity(cart, id, qty) {
